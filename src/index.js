@@ -2,7 +2,7 @@
 // we want when our app load at that time all the env variables availabe everywhere
 import dotenv from "dotenv" // subtitute for above require line
 import connectDB from "./db/index.js";
-
+import express from "express"
 dotenv.config({
     path: './env'
 })
@@ -33,7 +33,8 @@ connectDB()
 
 
 // import express from "express"
-// const app = express();
+// import { express } from 'express';
+const app = express();
 // below code for connecting to DB 
 // function connectDB(){}
 // connectDB()
