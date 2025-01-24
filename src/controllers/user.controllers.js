@@ -3,11 +3,12 @@ import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
+import mongoose from "mongoose";
 
 const registerUser = asyncHandler( async (req, res) => {
     // get user details from frontend
     const{ fullName, email, username, password} = req.body
-    console.log("email: ", email);
+        // console.log("email: ", email);
 
     // validation - not empty
     if(
@@ -17,7 +18,7 @@ const registerUser = asyncHandler( async (req, res) => {
     }
 
     // check if user already exits: username, email
-    const exitedUser = User.findOne({
+    const exitedUser = await User.findOne({
         $or: [{ username },{ email }]
     })
     if(exitedUser){
@@ -26,7 +27,12 @@ const registerUser = asyncHandler( async (req, res) => {
 
     // check for images, check for avatar
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+        // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+    let coverImageLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage[0]){
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
 
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar file is required ")
@@ -48,7 +54,7 @@ const registerUser = asyncHandler( async (req, res) => {
         coverImage: coverImage?.url || "",
         email,
         password,
-        username: username.ToLowerCase()
+        username: username.toLowerCase()
     })
 
     // remove password and referesh token field from response

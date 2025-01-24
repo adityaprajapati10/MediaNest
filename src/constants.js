@@ -1,1 +1,1 @@
-export const DB_NAME = "MediaNest"
+export const DB_NAME ="medianest"

@@ -21,7 +21,9 @@ import userRouter from './routes/user.routes.js'
 
 // ROUTES Declaration
 app.use("/api/v1/users", userRouter)
-
+app.get("/home", (req,res)=>{
+    res.send("hii");
+})
 
 // http://localhost:8000/api/v1/users/register
 
